@@ -1,7 +1,6 @@
 ;--- MULTIBOOT HEADER ---
 MAGIC    equ 0x1BADB002         
-; FLAGS: Bit 0 (Align), Bit 1 (MemInfo), und Bit 2 (Grafikmodus anfordern!)
-FLAGS    equ 1 | 2 | 4          
+       
 CHECKSUM equ -(MAGIC + FLAGS)   
 
 section .multiboot
@@ -10,11 +9,11 @@ align 4
     dd FLAGS
     dd CHECKSUM
     
-    ; Diese Felder müssen ausgefüllt werden, wenn Bit 2 in FLAGS gesetzt ist:
-    dd 0    ; Mode-Typ (0 = Linearer Framebuffer/Grafik, 1 = Text)
-    dd 1024 ; Bevorzugte Breite (Width)
-    dd 768  ; Bevorzugte Höhe (Height)
-    dd 32   ; Bevorzugte Bits per Pixel (BPP)
+    
+    dd 0    
+    dd 1024 ;  (Width)
+    dd 768  ; Höhe (Height)
+    dd 32   ;  Bits per Pixel (BPP)
 
 ; --- KERNEL STACK ---
 section .bss
@@ -31,10 +30,7 @@ extern kernel_main
 _start:
     mov esp, stack_top
 
-    ; WICHTIG: GRUB übergibt die Argumente in Registern:
-    ; EAX = Magic Number (0x2BADB002 bei Multiboot 1)
-    ; EBX = Adresse der Multiboot-Informationsstruktur
-    ; Wir pushen sie auf den Stack, damit kernel_main(magic, addr) sie lesen kann.
+    
     push ebx
     push eax
 
