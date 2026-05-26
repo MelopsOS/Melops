@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "1. OS Kompilieren & Linken",
+            "type": "shell",
+            "command": "nasm -f elf32 boot.asm -o boot.o && gcc -m32 -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra && ld -m elf_i386 -T linker.ld boot.o kernel.o -o melkernel.bin",
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "Assembles and compiles /kernel.c/ and /boot.asm/"
+        },
+        {
+            "label": "2. ISO Erstellen",
+            "type": "shell",
+            "command": "mkdir -p iso_root/boot/grub && cp melkernel.bin iso_root/boot/ && cp grub.cfg iso_root/boot/grub/ && grub2-mkrescue -o melops.iso iso_root",
+            "dependsOn": "1. OS Kompilieren & Linken",
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "Compiles and Links the final ISO for the Grub-Bootloader."
+        },
+        {
+            "label": "3. QEMU Booten",
+            "type": "shell",
+            "command": "qemu-system-i386 -cdrom melops.iso -vga std",
+            "dependsOn": "2. ISO Erstellen",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "detail": "Starts Melops in Virtual-Machine."
+        }
+    ]
+}
