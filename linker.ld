@@ -1,0 +1,39 @@
+ENTRY(start)
+
+SECTIONS
+{
+    
+
+    . = 1M;
+
+    _kernel_start = .;
+    kernel_start = .;
+
+    
+    .text BLOCK(4K) : ALIGN(4K)
+    {
+        *(.multiboot)
+        *(.text)
+    }
+
+    .rodata BLOCK(4K) : ALIGN(4K)
+    {
+        *(.rodata)
+    }
+
+    .data BLOCK(4K) : ALIGN(4K)
+    {
+        *(.data)
+    }
+
+    .bss BLOCK(4K) : ALIGN(4K)
+    {
+        *(COMMON) 
+        *(.bss)
+    }
+
+    
+    . = ALIGN(4096);
+    _kernel_end = .;
+    kernel_end = .;
+}
