@@ -91,7 +91,7 @@ void pmm_init(struct multiboot_info *mbm)
 
     if (pmm_stack_top < 0)
     {
-        print("PMM: Map war leer. Aktiviere linearen Fallback (mem_upper)...\n", 'R');
+        print("PMM: Map empty (mem_upper)...\n", 'R');
 
         uint32_t fallback_end_addr = 0x100000 + (mbm->mem_upper * 1024);
 
