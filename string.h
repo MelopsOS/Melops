@@ -1,7 +1,7 @@
 #ifndef STRING_H
 #define STRING_H
 
-// Nur die beiden benötigten Funktionen
+
 void stringStream(int line, char *destination, int selectWord);
 int strcmp(char *string1, char *string2);
 
